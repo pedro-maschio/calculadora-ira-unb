@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="style.css">
+    <title>Calculadora de IRA UnB</title>
+</head>
+<body>  
+    <h1 id="titulo">Calculadora de IRA</h1>
+
+    <div class="container" id="container">
+        <div id="linhaSuperior">
+            <button id="novoPeriodo" class="btn btn-success" onclick="criaPeriodo()">Novo Período</button>
+            <h3 id="ira">IRA: 0.00</h3>
+        </div>
+        <div id="periodo1">
+            <h3>1º Período</h3> 
+        </div>
+    </div>
+
+    <footer>
+        <p>Este não é um site oficial da Universidade de Brasília. O IRA calculado aqui não pode ser utilizado para fins de comprovação de rendimento acadêmico.</p>
+    </footer>
+</body>
+<script src="functionality.js"></script>    
+</html>
