@@ -1,16 +1,10 @@
 document.getElementById('container').onchange = function() {
-    var DTb = parseInt(document.getElementById("DTb").value);
-    var DTp = parseInt(document.getElementById("DTp").value);
-
-    if(isNaN(DTb))
-        DTb = 0;
-    if(isNaN(DTp))
-        DTp = 0;
-
-    var numPeriodo = document.getElementById("container").childElementCount - 2;
+    var numPeriodo = document.getElementById("container").childElementCount - 1;
     var totalDisciplinas = 0;
-    var numerador = 0;
-    var denominador = 0;
+    var numeradorIra = 0;
+    var denominadorIra = 0;
+    var numeradorMp = 0;
+    var denominadorMp = 0;
 
     for(var i = 1; i <= numPeriodo; i++) {
         var periodo = document.getElementById("periodo"+i);
@@ -19,26 +13,30 @@ document.getElementById('container').onchange = function() {
         for(var j = 1; j <= numDisciplinas; j++) {
             var numCreditos = document.getElementById("periodo"+i+"-disciplina"+j+"-creditos").value;
             var mencao = parseInt(document.getElementById("periodo"+i+"-disciplina"+j+"-mencao").value);
-
             
-            if(Number.isInteger(parseInt(numCreditos)) && mencao -1) {
+            if(mencao != -1 && numCreditos != -1) {
                 totalDisciplinas++;
                 
-                numerador += mencao * parseInt(numCreditos) * Math.min(6, i);
-                denominador += parseInt(numCreditos) * Math.min(6, i);
+                numeradorIra += mencao * parseInt(numCreditos) * Math.min(6, i);
+                denominadorIra += parseInt(numCreditos) * Math.min(6, i);
+
+                numeradorMp += mencao * parseInt(numCreditos);
+                denominadorMp += parseInt(numCreditos);
             }
         }
     }
 
-    var ira = (1 - (0.6 * DTb + 0.4 * DTp) / totalDisciplinas) * (numerador / denominador);
+    var ira = numeradorIra / denominadorIra;
+    var mp = numeradorMp / denominadorMp;
 
-    if(ira != NaN && ira > 0)
-        document.getElementById("ira").innerText = "IRA: " + ira.toFixed(4);
+    if(ira != NaN && ira >= 0 && mp != NaN && mp >= 0)
+        document.getElementById("ira-mp").innerText = "IRA: " + ira.toFixed(4) + " MP: " + mp.toFixed(4);
+    
 }
 
 function criaDisciplina() {
     var container = document.getElementById("container");
-    var numPeriodo = container.childElementCount-2;
+    var numPeriodo = container.childElementCount-1;
 
     if(typeof(this.id) != 'undefined')
         numPeriodo = parseInt(this.id.split("-")[1]);
@@ -53,10 +51,30 @@ function criaDisciplina() {
     if(typeof(divBotao) != 'undefined' && divBotao != null)
         divBotao.remove();
 
-    var entradaCreditos = document.createElement("input");
+    var entradaCreditos = document.createElement('select');
     entradaCreditos.setAttribute("id", "periodo"+numPeriodo+"-disciplina"+(numDisciplina+1)+"-creditos");
-    entradaCreditos.setAttribute("class", "form-control");
-    entradaCreditos.setAttribute("placeholder", "Número de créditos");
+    entradaCreditos.setAttribute("class", "form-select");
+
+    var selecioneCreditos = document.createElement('option')
+    selecioneCreditos.innerText = "Créditos";
+    selecioneCreditos.value = -1;
+
+    var creditos2 = document.createElement('option');
+    creditos2.innerText = "2";
+    creditos2.value = 2;
+
+    var creditos4 = document.createElement('option');
+    creditos4.innerText = "4";
+    creditos4.value = 4;
+
+    var creditos6 = document.createElement('option');
+    creditos6.innerText = "6";
+    creditos6.value = 6;
+
+    entradaCreditos.appendChild(selecioneCreditos);
+    entradaCreditos.appendChild(creditos2);
+    entradaCreditos.appendChild(creditos4);
+    entradaCreditos.appendChild(creditos6);
 
     var entradaMencao  = document.createElement("select");
     entradaMencao.setAttribute("id", "periodo"+numPeriodo+"-disciplina"+(numDisciplina+1)+"-mencao");
@@ -134,7 +152,7 @@ function criaDisciplina() {
 }
 
 function criaPeriodo() {
-    var numPeriodo = document.getElementById("container").childElementCount -1;
+    var numPeriodo = document.getElementById("container").childElementCount;
     var divContainer = document.getElementById("container");
 
     var divNovoPeriodo = document.createElement("div");
