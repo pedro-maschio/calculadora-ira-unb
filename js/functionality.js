@@ -50,7 +50,7 @@ function removeDisciplina() {
     }   
 
     var divPeriodo = document.getElementById('periodo'+numPeriodo);
-    var divContainer = document.getElementById('container');
+    
     if(numDisciplina > 1) {
         // só removemos a disciplina atual
        
@@ -67,6 +67,54 @@ function removeDisciplina() {
         divButton.appendChild(criaBotaoAdicionar(numPeriodo, numDisciplina));
         divButton.appendChild(criaBotaoRemover(numPeriodo, numDisciplina));
         divDisciplina.appendChild(divButton)
+    } else {
+        // removemos o período
+        var divContainer = document.getElementById('container');
+        divContainer.removeChild(divPeriodo);
+
+        // renomeio os períodos
+   
+        var periodos = divContainer.children;
+
+        // pulo o primeiro pois ele é a linha superior
+        for(var i = 1; i < periodos.length; i++) {
+            periodos[i].id = "periodo"+i;
+
+            // cada período tem um h3 e divs com disciplinas;
+            var disciplinas = periodos[i].children;
+            disciplinas[0].innerText = i+"º Período";
+            
+            for(var j = 1; j < disciplinas.length; j++) {
+                disciplinas[j].id = "periodo"+i+"-disciplina"+j;
+
+                // dentro de cada disciplina há 2 ou três divs (três quando há botões)
+
+                var camposDisciplina = disciplinas[j].children;
+
+                for(var k = 0; k < camposDisciplina.length; k++) {
+                    if(k == 2) {
+                        // há dois botões como filho
+                        camposDisciplina[k].id = "divButton-"+i+"-"+j;
+
+                        var botoes = camposDisciplina[k].children;
+                        botoes[0].id = "adicionarDisciplina-"+i+"-"+j;                        
+                        botoes[1].id = "removerDisciplina-"+i+"-"+j;
+                    } else {
+                        // há um select como filho
+
+                        camposDisciplina[k].children[0].id = "periodo"+i+"-disciplina"+j+"-";
+
+                        if(k == 0) {
+                            camposDisciplina[k].children[0].id += "creditos";
+                        } else {
+                            camposDisciplina[k].children[0].id += "mencao";
+                        }
+                    }
+                }
+            }
+        }
+
+     
     }
     calculaIRA();
 }
