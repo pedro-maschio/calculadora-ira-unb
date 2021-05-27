@@ -208,6 +208,16 @@ function criaDisciplina() {
     divButton.appendChild(botaoAdicionar);
     divButton.appendChild(botaoRemover);
 
+
+    // var divColNome = document.createElement("div");
+    // divColNome.setAttribute("class", "col-sm-4");
+
+    // var nomeDisciplina = document.createElement("input");
+    // nomeDisciplina.setAttribute("type", "text");
+
+    // divColNome.appendChild(nomeDisciplina);
+
+    // divDisciplinaNova.appendChild(divColNome);
     divDisciplinaNova.appendChild(divColDisciplina);
     divDisciplinaNova.appendChild(divColCreditos);
     divDisciplinaNova.appendChild(divButton);
