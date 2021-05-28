@@ -1,3 +1,62 @@
+function checkLocalStorage() {
+    if (typeof(Storage) === "undefined") {
+        document.getElementById("salvaDados").style.display = "none";
+    } else {
+        
+        if(window.localStorage.length == 0)
+            criaDisciplina();
+
+        for(var i  = 1; i <= window.localStorage.length; i++) {
+            var periodo = Object.entries(JSON.parse(window.localStorage.getItem(i)))
+            var j = 0;
+            for(const [key, value] of periodo) {
+                criaDisciplina(true, i, j, value);
+                j++;
+            }
+            if(i != window.localStorage.length)
+                criaPeriodo(true);
+        }
+    }
+}
+
+function salvarDados() {
+    var divContainer = document.getElementById('container');
+
+    window.localStorage.clear(); // limpo tudo que estava salvo anteriormente
+
+    var periodos = divContainer.children;
+
+    // começamos do 1 pois há a linha superior
+    for(var i = 1; i < periodos.length; i++) {  
+        var periodo = {}
+        // cada período tem um h3 e divs com disciplinas;
+        var disciplinas = periodos[i].children;
+ 
+        for(var j = 1; j < disciplinas.length; j++) {
+            var disciplina = [];
+
+            var camposDisciplina = disciplinas[j].children;
+
+            // só existe um select em cada div, children[0] por isso
+            disciplina.push(camposDisciplina[0].children[0].selectedIndex);
+            disciplina.push(camposDisciplina[1].children[0].selectedIndex);
+            
+            periodo[j] = disciplina;
+        }
+        window.localStorage.setItem(i, JSON.stringify(periodo));
+    }
+
+    //console.log(window.localStorage);
+
+    // for(var i = 1; i <= window.localStorage.length; i++) {
+    //     console.log(JSON.parse(window.localStorage.getItem(i))[1]);
+    //     console.log(JSON.parse(window.localStorage.getItem(i))[2]);
+
+    //     console.log("\n\n\n\n\n\n\n");
+
+    // }
+}
+
 function calculaIRA() {
     var numPeriodo = document.getElementById("container").childElementCount - 1;
     var totalDisciplinas = 0;
@@ -67,7 +126,7 @@ function removeDisciplina() {
         divButton.appendChild(criaBotaoAdicionar(numPeriodo, numDisciplina));
         divButton.appendChild(criaBotaoRemover(numPeriodo, numDisciplina));
         divDisciplina.appendChild(divButton)
-    } else {
+    } else if(numPeriodo > 1) {
         // removemos o período
         var divContainer = document.getElementById('container');
         divContainer.removeChild(divPeriodo);
@@ -139,14 +198,17 @@ function criaBotaoRemover(numPeriodo, numDisciplina) {
     return botaoRemover;
 }
 
-function criaDisciplina() {
+function criaDisciplina(salva=false, numPeriodo = -1, numDisciplina = -1, dados=[]) {
     var container = document.getElementById("container");
-    var numPeriodo = container.childElementCount-1;
+  
+    if(salva !== MouseEvent) {
+        numPeriodo = container.childElementCount-1;
 
-    if(typeof(this.id) != 'undefined')
-        numPeriodo = parseInt(this.id.split("-")[1]);
+        if(typeof(this.id) != 'undefined')
+            numPeriodo = parseInt(this.id.split("-")[1]);
 
-    var numDisciplina = document.getElementById("periodo"+numPeriodo).childElementCount-1;
+        numDisciplina = document.getElementById("periodo"+numPeriodo).childElementCount-1;
+    } 
 
     var botaoAdicionar = document.getElementById("adicionarDisciplina-"+numPeriodo+"-"+numDisciplina);
     var divBotao = document.getElementById("divButton-"+numPeriodo+"-"+numDisciplina)
@@ -160,6 +222,7 @@ function criaDisciplina() {
     var entradaCreditos = document.createElement('select');
     entradaCreditos.setAttribute("id", "periodo"+numPeriodo+"-disciplina"+(numDisciplina+1)+"-creditos");
     entradaCreditos.setAttribute("class", "form-select");
+    
 
     var textosCreditos = ["Créditos", "2", "4", "6"];
     var valoresCreditos = [-1, 2, 4, 6];
@@ -202,22 +265,20 @@ function criaDisciplina() {
     divButton.setAttribute("class", "col-sm");
     divButton.setAttribute("id", "divButton-"+numPeriodo+"-"+(numDisciplina+1));
 
+    if(salva == true) {
+
+
+        entradaCreditos.selectedIndex = dados[0];
+        entradaMencao.selectedIndex = dados[1];
+        
+    }
+
     divColDisciplina.appendChild(entradaCreditos);
     divColCreditos.appendChild(entradaMencao);
 
     divButton.appendChild(botaoAdicionar);
     divButton.appendChild(botaoRemover);
 
-
-    // var divColNome = document.createElement("div");
-    // divColNome.setAttribute("class", "col-sm-4");
-
-    // var nomeDisciplina = document.createElement("input");
-    // nomeDisciplina.setAttribute("type", "text");
-
-    // divColNome.appendChild(nomeDisciplina);
-
-    // divDisciplinaNova.appendChild(divColNome);
     divDisciplinaNova.appendChild(divColDisciplina);
     divDisciplinaNova.appendChild(divColCreditos);
     divDisciplinaNova.appendChild(divButton);
@@ -225,10 +286,9 @@ function criaDisciplina() {
     var divPeriodo = document.getElementById("periodo"+numPeriodo);
     divPeriodo.appendChild(divDisciplinaNova);
 
-
 }
 
-function criaPeriodo() {
+function criaPeriodo(salvo=false) {
     var numPeriodo = document.getElementById("container").childElementCount;
     var divContainer = document.getElementById("container");
 
@@ -241,7 +301,7 @@ function criaPeriodo() {
     divNovoPeriodo.appendChild(titulo);
     divContainer.appendChild(divNovoPeriodo);
 
-    criaDisciplina();
+    if(salvo == false)
+        criaDisciplina();
 }
 
-criaDisciplina();

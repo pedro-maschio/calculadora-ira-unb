@@ -10,12 +10,14 @@
     <link rel="shortcut icon" type="image/png" href="imgs/UnBIcon.png"/>
     <title>Calculadora de IRA UnB</title>
 </head>
-<body>  
+<body onload="checkLocalStorage();">  
     <h1 id="titulo">Calculadora de IRA</h1>
 
     <div class="container" id="container">
         <div id="linhaSuperior">
             <button id="novoPeriodo" class="btn btn-success" onclick="criaPeriodo()">Novo Período</button>
+
+            <button id="salvaDados" onclick="salvarDados()" class="btn btn-primary">Salvar Dados Localmente</button>
             
             <h3 id="ira-mp">IRA: 0.00 MP: 0.00</h3>
            
