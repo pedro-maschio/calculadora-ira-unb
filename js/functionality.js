@@ -16,6 +16,8 @@ function checkLocalStorage() {
             if(i != window.localStorage.length)
                 criaPeriodo(true);
         }
+
+        calculaIRA();
     }
 }
 
