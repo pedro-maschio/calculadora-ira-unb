@@ -47,27 +47,15 @@ function salvarDados() {
         }
         window.localStorage.setItem(i, JSON.stringify(periodo));
     }
-
-    //console.log(window.localStorage);
-
-    // for(var i = 1; i <= window.localStorage.length; i++) {
-    //     console.log(JSON.parse(window.localStorage.getItem(i))[1]);
-    //     console.log(JSON.parse(window.localStorage.getItem(i))[2]);
-
-    //     console.log("\n\n\n\n\n\n\n");
-
-    // }
 }
 
 function calculaIRA() {
     var numPeriodo = document.getElementById("container").childElementCount - 1;
     var totalDisciplinas = 0;
 
-    // índice de rendimento acadêmico
     var numeradorIra = 0;
     var denominadorIra = 0;
 
-    // média ponderada
     var numeradorMp = 0;
     var denominadorMp = 0;
 
@@ -101,6 +89,7 @@ function calculaIRA() {
 
 document.getElementById('container').onchange = function() {
     calculaIRA();
+    salvarDados();
 }
 
 function removeDisciplina() {
@@ -117,7 +106,6 @@ function removeDisciplina() {
        
         divPeriodo.removeChild(document.getElementById('periodo'+numPeriodo+"-disciplina"+numDisciplina))
         
-        // criamos os botões na disciplina de cima
         numDisciplina = numDisciplina - 1;
 
         var divDisciplina = document.getElementById("periodo"+numPeriodo+"-disciplina"+numDisciplina);
@@ -134,7 +122,6 @@ function removeDisciplina() {
         divContainer.removeChild(divPeriodo);
 
         // renomeio os períodos
-   
         var periodos = divContainer.children;
 
         // pulo o primeiro pois ele é a linha superior
@@ -178,6 +165,7 @@ function removeDisciplina() {
      
     }
     calculaIRA();
+    salvarDados();
 }
 
 function criaBotaoAdicionar(numPeriodo, numDisciplina) {
@@ -268,11 +256,8 @@ function criaDisciplina(salva=false, numPeriodo = -1, numDisciplina = -1, dados=
     divButton.setAttribute("id", "divButton-"+numPeriodo+"-"+(numDisciplina+1));
 
     if(salva == true) {
-
-
         entradaCreditos.selectedIndex = dados[0];
         entradaMencao.selectedIndex = dados[1];
-        
     }
 
     divColDisciplina.appendChild(entradaCreditos);
