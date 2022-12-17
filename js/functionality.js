@@ -1,3 +1,6 @@
+var textosCreditos = ["Créditos", "2", "3", "4", "6", "8", "10", "12", "16", "22", "40", "52", "64"];
+var valoresCreditos = [-1, 2, 3, 4, 6, 8, 10, 12, 16, 22, 40, 52, 64];
+
 function checkLocalStorage() {
     if (typeof(Storage) === "undefined") {
         document.getElementById("salvaDados").style.display = "none";
@@ -66,7 +69,7 @@ function calculaIRA() {
         for(var j = 1; j <= numDisciplinas; j++) {
             var numCreditos = document.getElementById("periodo"+i+"-disciplina"+j+"-creditos").value;
             var mencao = parseInt(document.getElementById("periodo"+i+"-disciplina"+j+"-mencao").value);
-            
+            console.log(numCreditos, mencao)
             if(mencao != -1 && numCreditos != -1) {
                 totalDisciplinas++;
                  
@@ -214,10 +217,7 @@ function criaDisciplina(salva=false, numPeriodo = -1, numDisciplina = -1, dados=
     entradaCreditos.setAttribute("class", "form-select");
     
 
-    var textosCreditos = ["Créditos", "2", "4", "6"];
-    var valoresCreditos = [-1, 2, 4, 6];
-
-    for(var i = 0; i < 4; i++) {
+    for(var i = 0; i < textosCreditos.length; i++) {
         var selecione = document.createElement('option')
         selecione.innerText = textosCreditos[i];
         selecione.value = valoresCreditos[i]
